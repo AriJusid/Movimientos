@@ -1,38 +1,61 @@
 import React from 'react';
-import { View, Text, ImageBackground, StyleSheet } from 'react-native';
+import { View, Text, ImageBackground, StyleSheet, ScrollView } from 'react-native';
+
+const events = [
+  {
+    imageUri: 'https://media.istockphoto.com/id/1279483477/es/foto/vamos-a-festejar-como-si-no-hubiera-ma%C3%B1ana.jpg?s=612x612&w=0&k=20&c=w7IMZ3D7o1S3RUA-aYWUwVAsPs1v2X-q4rwrMhJ4S6g=',
+    eventName: "Festival Hazemer",
+    eventDate: "2 Mayo",
+    eventTime: "11 PM",
+    eventFullDate: "mayo 2, 2025",
+    venue: "Centro Hebreo Ioná",
+    priceRange: "$12.000 - $15.000"
+  },
+  {
+    imageUri: 'https://www.argentina.gob.ar/sites/default/files/jbotanicocnm.jpg',
+    eventName: "Festival Hazemer",
+    eventDate: "13 Junio",
+    eventTime: "11 PM",
+    eventFullDate: "mayo 2, 2025",
+    venue: "Centro Hebreo Ioná",
+    priceRange: "$12.000 - $15.000"
+  },
+];
 
 const EventCard = ({
-  imageUri,
-  eventName,
-  eventDate,      // e.g., "2 May"
-  eventTime,      // e.g., "11 pm"
-  eventFullDate,  // e.g., "mayo 2, 2025"
-  venue,
-  priceRange,     // e.g., "$12.000 - $15.000"
+  onSeeMore
 }) => (
-  <View style={styles.card}>
-    <ImageBackground
-      source={{ uri: imageUri }}
-      style={styles.image}
-      imageStyle={styles.imageRadius}
-    >
-      {/* Festival logo overlay */}
-      {/* Date Box */}
-      <View style={styles.dateBox}>
-        <Text style={styles.dateDay}>{eventDate.split(' ')[0]}</Text>
-        <Text style={styles.dateMonth}>{eventDate.split(' ')[1]}</Text>
+    <>
+    <View style={styles.headerRow}>
+      <Text style={styles.header}>Mis eventos</Text>
+    </View>
+  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+    {events.map((event, idx) => (
+      <View style={styles.card} key={idx}>
+        <ImageBackground
+          source={{ uri: event.imageUri }}
+          style={styles.image}
+          imageStyle={styles.imageRadius}
+        >
+          {/* Date Box */}
+          <View style={styles.dateBox}>
+            <Text style={styles.dateDay}>{event.eventDate.split(' ')[0]}</Text>
+            <Text style={styles.dateMonth}>{event.eventDate.split(' ')[1]}</Text>
+          </View>
+          {/* Details Overlay */}
+          <View style={styles.detailsOverlay}>
+            <Text style={styles.eventName}>{event.eventName}</Text>
+            <Text style={styles.eventInfo}>
+              {event.eventTime} {event.eventFullDate}
+            </Text>
+            <Text style={styles.eventInfo}>{event.venue}</Text>
+            <Text style={styles.price}>{event.priceRange}</Text>
+          </View>
+        </ImageBackground>
       </View>
-      {/* Details Overlay */}
-      <View style={styles.detailsOverlay}>
-        <Text style={styles.eventName}>{eventName}</Text>
-        <Text style={styles.eventInfo}>
-          {eventTime} {eventFullDate}
-        </Text>
-        <Text style={styles.eventInfo}>{venue}</Text>
-        <Text style={styles.price}>{priceRange}</Text>
-      </View>
-    </ImageBackground>
-  </View>
+    ))}
+  </ScrollView>
+  </>
 );
 
 const styles = StyleSheet.create({
@@ -45,6 +68,14 @@ const styles = StyleSheet.create({
     elevation: 3,
     margin: 10,
   },
+
+  header: {
+    marginHorizontal: 8,
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#222',
+  },
+
   image: {
     width: '100%',
     height: '100%',
@@ -53,14 +84,6 @@ const styles = StyleSheet.create({
   imageRadius: {
     borderRadius: 16,
   },
-  logoContainer: {
-    position: 'absolute',
-    top: 14,
-    alignSelf: 'center',
-    alignItems: 'center',
-    zIndex: 2,
-  },
-  
   dateBox: {
     position: 'absolute',
     top: 18,
@@ -92,7 +115,7 @@ const styles = StyleSheet.create({
   detailsOverlay: {
     width: '100%',
     backgroundColor: 'rgba(0,0,0,0.55)',
-    height:'40%',
+    height: '40%',
     padding: 18,
     borderBottomLeftRadius: 16,
     borderBottomRightRadius: 16,
